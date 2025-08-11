@@ -12,5 +12,4 @@ jobs:
       - name: Call EasyPanel Deploy Hook
         run: |
           curl -X POST \
-               -H "Content-Type: application/json" \
                "${{ secrets.EASYPANEL_WEBHOOK }}"
