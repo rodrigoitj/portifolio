@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import { Suspense } from "react";
 import "./globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
@@ -53,7 +54,11 @@ export default function RootLayout({
             </Script>
           </>
         ) : null}
-        {GA_ID ? <GoogleAnalytics gaId={GA_ID} /> : null}
+        {GA_ID ? (
+          <Suspense fallback={null}>
+            <GoogleAnalytics gaId={GA_ID} />
+          </Suspense>
+        ) : null}
         {children}
       </body>
     </html>
