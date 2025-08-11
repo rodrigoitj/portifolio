@@ -1,0 +1,16 @@
+name: Deploy via EasyPanel
+
+on:
+  push:
+    branches:
+      - main # Só dispara quando houver commit ou merge na branch main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call EasyPanel Deploy Hook
+        run: |
+          curl -X POST \
+               -H "Content-Type: application/json" \
+               "${{ secrets.EASYPANEL_WEBHOOK }}"
