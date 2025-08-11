@@ -42,7 +42,11 @@ export default function Home() {
           src="/hero2.png"
           alt="Hero background"
           fill
-          style={{ objectFit: "contain", objectPosition: "right", transform: "translateY(30%)" }}
+          style={{
+            objectFit: "contain",
+            objectPosition: "right",
+            transform: "translateY(30%)",
+          }}
           className="opacity-90 grayscale"
           priority
         />
@@ -51,7 +55,13 @@ export default function Home() {
       <div className="absolute left-0 top-0 h-full flex flex-col justify-between py-12 pl-8 text-xs text-gray-400 tracking-widest z-10 select-none">
         <div>
           <div className="mb-8 font-bold text-lg text-gray-200">
-            <Image src="/logo.png" alt="Correa.Dev" width={160} height={40} className="h-10 w-auto" />
+            <Image
+              src="/logo.png"
+              alt="Correa.Dev"
+              width={160}
+              height={40}
+              className="h-10 w-auto"
+            />
           </div>
         </div>
         {/* <div className="mt-8">© {new Date().getFullYear()}</div> */}
@@ -59,16 +69,49 @@ export default function Home() {
       {/* Main Content */}
       <main className="flex flex-col items-center justify-center pt-32 pb-24 px-4 max-w-3xl w-full z-10">
         <div className="text-center">
-          <h1 className={`text-4xl md:text-5xl font-bold tracking-widest mb-4 text-gray-100 ${roboto.className}`}>Rodrigo Corrêa</h1>
-          <p className={`${roboto.className} max-w-xl mx-auto text-gray-300 text-base md:text-lg leading-relaxed mb-8`}>
-          I&apos;m a web developer with experience in building modern, efficient, and scalable solutions. Passionate about technology, I combine best practices and performance to deliver applications that truly make a difference.
+          <h1
+            className={`text-4xl md:text-5xl font-bold tracking-widest mb-4 text-gray-100 ${roboto.className}`}
+          >
+            Rodrigo Corrêa
+          </h1>
+          <p
+            className={`${roboto.className} max-w-xl mx-auto text-gray-300 text-base md:text-lg leading-relaxed mb-8`}
+          >
+            I&apos;m a web developer with experience in building modern,
+            efficient, and scalable solutions. Passionate about technology, I
+            combine best practices and performance to deliver applications that
+            truly make a difference.
           </p>
+          <div className="flex flex-wrap justify-center gap-2 mt-8 z-10">
+            {[
+              ".NET Core",
+              "JavaScript",
+              "Node.js",
+              "ReactJS",
+              "MySQL",
+              "Oracle",
+              "SQL Server",
+              "Postgres",
+              "MongoDB",
+              "Docker",
+              "Microservices",
+              "Unit Testing",
+              "DevOps",
+            ].map((tag) => (
+              <span
+                key={tag}
+                className="inline-block px-3 py-1 rounded-full bg-gray-800/80 text-xs font-medium text-cyan-300 border border-cyan-700 shadow-sm tracking-wide"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
         </div>
       </main>
       {/* Social / Contact Icons */}
       <div
         className="fixed left-1/2 -translate-x-1/2 flex gap-3 md:gap-4 z-10"
-        style={{ bottom: 'max(2rem, env(safe-area-inset-bottom, 0px))' }}
+        style={{ bottom: "max(2rem, env(safe-area-inset-bottom, 0px))" }}
       >
         {links.map(({ name, url, icon: Icon }, index) => (
           <Tooltip key={index} content={name}>
@@ -89,7 +132,13 @@ export default function Home() {
         ))}
       </div>
       {/* Overlay for white paint effect */}
-      <div className="pointer-events-none absolute inset-0 z-0" style={{background: "radial-gradient(circle at 60% 40%, rgba(16,16,20,0.7) 0%, rgba(16,16,20,0.2) 60%, transparent 100%)"}} />
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(circle at 60% 40%, rgba(16,16,20,0.7) 0%, rgba(16,16,20,0.2) 60%, transparent 100%)",
+        }}
+      />
     </div>
   );
 }
