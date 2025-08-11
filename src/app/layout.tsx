@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,11 +29,31 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
   return (
     <html lang="en">
+      <head></head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased magicpattern`}
       >
+        {GA_ID ? (
+          <>
+            <Script
+              id="ga-loader"
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);} 
+                window.gtag = window.gtag || gtag;
+                gtag('js', new Date());
+              `}
+            </Script>
+          </>
+        ) : null}
+        {GA_ID ? <GoogleAnalytics gaId={GA_ID} /> : null}
         {children}
       </body>
     </html>
