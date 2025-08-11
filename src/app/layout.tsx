@@ -50,6 +50,7 @@ export default function RootLayout({
                 function gtag(){dataLayer.push(arguments);} 
                 window.gtag = window.gtag || gtag;
                 gtag('js', new Date());
+                gtag('config', 'G-NQ138V50D8');
               `}
             </Script>
           </>
