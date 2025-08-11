@@ -28,7 +28,7 @@ const links = [
   },
   {
     name: "Email",
-    url: "mailto:rodrigocorrea.dev@gmail.com",
+    url: "mailto:rodrigo@correa.dev",
     icon: Mail,
   },
 ];
