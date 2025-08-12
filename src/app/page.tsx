@@ -33,6 +33,7 @@ const links = [
     name: "Email",
     url: "mailto:rodrigo@correa.dev",
     icon: Mail,
+    protectFromScrapers: true, // Protect this link from scrapers
   },
 ];
 export default function Home() {
