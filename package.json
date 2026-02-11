@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "docker build -t correa-dev-portfolio:dev . && docker run --rm -p 3000:3000 --name correa-dev-portfolio correa-dev-portfolio:dev",
+    "docker:dev": "docker build -t correa-dev-portfolio:dev . && docker run --rm -p 3000:3000 --name correa-dev-portfolio correa-dev-portfolio:dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

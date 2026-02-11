@@ -74,19 +74,26 @@ export default function Home() {
         <AboutMe />
         <MyTechnologies
           technologies={[
+            "C#",
             ".NET Core",
             "JavaScript",
+            "TypeScript",
             "Node.js",
             "ReactJS",
             "MySQL",
             "Oracle",
-            "SQL Server",
-            "Postgres",
             "MongoDB",
+            "SQL Server",
+            "RabbitMQ",
+            "Postgres",
             "Docker",
             "Microservices",
             "Unit Testing",
+            "Git",
+            "Azure Cloud",
             "DevOps",
+            "n8n",
+            "AI Integration",
           ]}
         />
       </main>
