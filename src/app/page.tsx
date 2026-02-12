@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 
 import { Roboto_Mono } from "next/font/google";
@@ -26,8 +27,11 @@ const links = [
   },
   {
     name: "Resume",
-    url: "/resume.pdf",
     icon: FileText,
+    submenu: [
+      { name: "English", url: "/resume/EN - CV - Rodrigo Correa.pdf" },
+      { name: "Português", url: "/resume/CV - Rodrigo Correa.pdf" },
+    ],
   },
   {
     name: "Email",

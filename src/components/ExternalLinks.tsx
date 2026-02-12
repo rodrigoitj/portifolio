@@ -1,11 +1,19 @@
+"use client";
 import { LucideIcon } from "lucide-react";
 import { Tooltip } from "@/components/Tooltip";
+import { useState } from "react";
+
+interface Submenu {
+  name: string;
+  url: string;
+}
 
 interface Link {
   name: string;
-  url: string;
+  url?: string;
   icon: LucideIcon;
   protectFromScrapers?: boolean;
+  submenu?: Submenu[];
 }
 
 interface ExternalLinksProps {
@@ -28,32 +36,71 @@ function createObfuscatedDataUrl(url: string): string {
 }
 
 export function ExternalLinks({ links }: ExternalLinksProps) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   return (
     <div
       className="fixed left-1/2 -translate-x-1/2 flex gap-3 md:gap-4 z-10"
       style={{ bottom: "max(2rem, env(safe-area-inset-bottom, 0px))" }}
     >
       {links.map(
-        ({ name, url, icon: Icon, protectFromScrapers = false }, index) => (
-          <Tooltip key={index} content={name}>
-            <a
-              href={protectFromScrapers ? "#" : url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={name}
-              className="group w-12 h-12 md:w-14 md:h-14 rounded-lg border border-gray-700 bg-[#181824]/80 shadow flex items-center justify-center hover:border-gray-500 hover:bg-[#1f1f2a]/80 transition-colors"
-              data-protected-url={
-                protectFromScrapers ? createObfuscatedDataUrl(url) : undefined
-              }
-              data-protected={protectFromScrapers ? "true" : undefined}
-            >
-              <Icon
-                className="w-5 h-5 md:w-6 md:h-6 text-gray-300 group-hover:text-white transition-colors"
-                strokeWidth={1.75}
-              />
-              <span className="sr-only">{name}</span>
-            </a>
-          </Tooltip>
+        ({ name, url, icon: Icon, protectFromScrapers = false, submenu }, index) => (
+          <div 
+            key={index} 
+            className="relative"
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {submenu && hoveredIndex === index && (
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 pb-2">
+                <div className="bg-[#181824]/95 border border-gray-700 rounded-lg shadow-lg overflow-hidden min-w-[140px] backdrop-blur-sm">
+                  {submenu.map((item, subIndex) => (
+                    <a
+                      key={subIndex}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:bg-[#1f1f2a] hover:text-white transition-colors"
+                    >
+                      {item.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+            {submenu ? (
+              <button
+                aria-label={name}
+                className="group w-12 h-12 md:w-14 md:h-14 rounded-lg border border-gray-700 bg-[#181824]/80 shadow flex items-center justify-center hover:border-gray-500 hover:bg-[#1f1f2a]/80 transition-colors"
+              >
+                <Icon
+                  className="w-5 h-5 md:w-6 md:h-6 text-gray-300 group-hover:text-white transition-colors"
+                  strokeWidth={1.75}
+                />
+                <span className="sr-only">{name}</span>
+              </button>
+            ) : (
+              <Tooltip content={name}>
+                <a
+                  href={protectFromScrapers ? "#" : url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={name}
+                  className="group w-12 h-12 md:w-14 md:h-14 rounded-lg border border-gray-700 bg-[#181824]/80 shadow flex items-center justify-center hover:border-gray-500 hover:bg-[#1f1f2a]/80 transition-colors"
+                  data-protected-url={
+                    protectFromScrapers ? createObfuscatedDataUrl(url!) : undefined
+                  }
+                  data-protected={protectFromScrapers ? "true" : undefined}
+                >
+                  <Icon
+                    className="w-5 h-5 md:w-6 md:h-6 text-gray-300 group-hover:text-white transition-colors"
+                    strokeWidth={1.75}
+                  />
+                  <span className="sr-only">{name}</span>
+                </a>
+              </Tooltip>
+            )}
+          </div>
         )
       )}
       {/* Client-side script to handle protected links */}
