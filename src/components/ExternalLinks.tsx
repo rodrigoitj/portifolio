@@ -54,6 +54,9 @@ export function ExternalLinks({ links }: ExternalLinksProps) {
             {submenu && hoveredIndex === index && (
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 pb-2">
                 <div className="bg-[#181824]/95 border border-gray-700 rounded-lg shadow-lg overflow-hidden min-w-[140px] backdrop-blur-sm">
+                  <div className="px-4 py-2 text-xs font-semibold text-gray-400 border-b border-gray-700 uppercase tracking-wide">
+                    {name}
+                  </div>
                   {submenu.map((item, subIndex) => (
                     <a
                       key={subIndex}
