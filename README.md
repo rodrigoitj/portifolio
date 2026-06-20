@@ -1,39 +1,60 @@
-# Whats is this
+# Rodrigo Corrêa — Resume Site
 
-This is a simple personal website for devs to show their social networks and resume.
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Single-page React + Vite resume, framed as a controlled engineering document. Light + dark theme, fully static output.
 
-## Getting Started
-
-First, run the development server:
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://127.0.0.1:5173
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build    # → dist/
+npm run preview  # preview the build locally
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Docker
 
-## Learn More
+```bash
+# build
+docker build -t rodrigo-resume:latest .
 
-To learn more about Next.js, take a look at the following resources:
+# run (default port 8080 → container port 80)
+docker run --rm -d -p 8080:80 --name resume rodrigo-resume:latest
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# browse
+open http://localhost:8080
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Multi-stage build (`node:22-alpine` builder → `nginx:1.27-alpine` server), final image ≈ 25 MB.
 
-## Deploy on Vercel
+### docker compose
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+docker compose up -d --build
+docker compose down
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Edit content
+
+All resume data lives in `src/data.js` (name, skills, experience, education, contact).
+
+## Theming
+
+- First load: respects `prefers-color-scheme`
+- Manual toggle (top-right) persists to `localStorage["rc-theme"]`
+- Inline script in `<head>` applies theme before first paint — no FOUC
+
+## Deploy
+
+`dist/` is a fully static bundle. Drop on any host:
+- Nginx/Caddy static
+- Vercel / Netlify / Cloudflare Pages / GitHub Pages
+- Any container (Docker image included)
+
+## Tech
+
+React 19 · Vite 8 · IBM Plex Sans + IBM Plex Mono · zero runtime CSS frameworks.
