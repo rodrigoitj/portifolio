@@ -1,18 +1,32 @@
-import { doc, resume } from "./data.js";
+import { content } from "./data.js";
 
-export default function App({ theme, setTheme }) {
-  const toggle = () => setTheme(theme === "dark" ? "light" : "dark");
+export default function App({ theme, setTheme, lang, setLang }) {
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+  const toggleLang = () => setLang(lang === "en" ? "pt-br" : "en");
+
+  const { doc, resume, ui } = content[lang];
+  const themeLabel = theme === "dark" ? ui.themeToggle.toLight : ui.themeToggle.toDark;
 
   return (
     <>
-      <button
-        className="theme-toggle"
-        onClick={toggle}
-        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-        title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-      >
-        {theme === "dark" ? <IconSun /> : <IconMoon />}
-      </button>
+      <div className="toggle-group">
+        <button
+          className="lang-toggle"
+          onClick={toggleLang}
+          aria-label={ui.langToggle}
+          title={ui.langToggle}
+        >
+          {lang === "en" ? "PT" : "EN"}
+        </button>
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={themeLabel}
+          title={themeLabel}
+        >
+          {theme === "dark" ? <IconSun /> : <IconMoon />}
+        </button>
+      </div>
 
       <div className="strip">
         <span className="top">{doc.classification}</span>
@@ -22,30 +36,30 @@ export default function App({ theme, setTheme }) {
 
       <div className="doc">
         <div className="topbar">
-          <span>{doc.id} · TECHNICAL RECORD</span>
+          <span>{doc.id} · {ui.documentType}</span>
           <div className="right">
-            <span>REV {doc.rev}</span>
-            <span>SHEET {doc.sheet}</span>
+            <span>{ui.rev} {doc.rev}</span>
+            <span>{ui.sheet} {doc.sheet}</span>
             <span className="stamp">{doc.classification}</span>
           </div>
         </div>
 
-        <TitleBlock />
+        <TitleBlock resume={resume} ui={ui} />
 
         <header className="hero">
           <div className="left">
-            <div className="role-line">Full Stack Developer · .NET · Azure</div>
+            <div className="role-line">{ui.roleLine}</div>
             <h1>
               Rodrigo <em>Corrêa</em>
             </h1>
           </div>
           <div className="right">
-            <div className="meta-line">§0 · Abstract</div>
+            <div className="meta-line">{ui.abstract}</div>
             <p className="summary">{resume.summary}</p>
           </div>
         </header>
 
-        <Section num="§01" crumb="Stack & Practice" title="Technical Stack">
+        <Section {...ui.sections.stack}>
           <div className="stack-grid">
             {Object.entries(resume.stack).map(([group, items]) => (
               <div className="stack-group" key={group}>
@@ -62,11 +76,7 @@ export default function App({ theme, setTheme }) {
           </div>
         </Section>
 
-        <Section
-          num="§02"
-          crumb="Operational Record"
-          title="Professional Experience"
-        >
+        <Section {...ui.sections.experience}>
           <div className="exp-list">
             {resume.experience.map((job, i) => (
               <article className="exp" key={i}>
@@ -78,14 +88,14 @@ export default function App({ theme, setTheme }) {
                 <div className="body">
                   <div className="head">
                     <div className="title">
-                    {job.role}
-                    {job.client && (
-                      <>
-                        {" "}
-                        <span className="client-tag">via {job.company}</span>
-                      </>
-                    )}
-                  </div>
+                      {job.role}
+                      {job.client && (
+                        <>
+                          {" "}
+                          <span className="client-tag">{ui.via} {job.company}</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                   <div className="org">
                     <strong>{job.client || job.company}</strong>
@@ -109,7 +119,7 @@ export default function App({ theme, setTheme }) {
           </div>
         </Section>
 
-        <Section num="§03" crumb="Academic Record" title="Education">
+        <Section {...ui.sections.education}>
           <div className="kv-rows">
             {resume.education.map((e, i) => (
               <div className="kv-row" key={i}>
@@ -126,7 +136,7 @@ export default function App({ theme, setTheme }) {
           </div>
         </Section>
 
-        <Section num="§04" crumb="Working Languages" title="Languages">
+        <Section {...ui.sections.languages}>
           <div className="kv-rows">
             {resume.languages.map((l, i) => (
               <div className="kv-row" key={i}>
@@ -135,7 +145,7 @@ export default function App({ theme, setTheme }) {
                 </div>
                 <div className="v">{l.name}</div>
                 <div className="status">
-                  CEFR
+                  {ui.cefr}
                   <span className="cefr">{l.cefr}</span>
                 </div>
               </div>
@@ -143,20 +153,20 @@ export default function App({ theme, setTheme }) {
           </div>
         </Section>
 
-        <Section num="§05" crumb="Point of Contact" title="Contact">
+        <Section {...ui.sections.contact}>
           <div className="contact-block">
             <div className="contact-cell">
-              <div className="k">Electronic Mail</div>
+              <div className="k">{ui.contact.email}</div>
               <div className="v">
                 <a href={`mailto:${resume.email}`}>{resume.email}</a>
               </div>
             </div>
             <div className="contact-cell">
-              <div className="k">Telephony</div>
+              <div className="k">{ui.contact.phone}</div>
               <div className="v">{resume.phone}</div>
             </div>
             <div className="contact-cell">
-              <div className="k">Professional Network</div>
+              <div className="k">{ui.contact.network}</div>
               <div className="v">
                 <a href={resume.linkedin} target="_blank" rel="noopener noreferrer">
                   linkedin.com/in/rodrigoitj
@@ -164,7 +174,7 @@ export default function App({ theme, setTheme }) {
               </div>
             </div>
             <div className="contact-cell">
-              <div className="k">Region / Time Zone</div>
+              <div className="k">{ui.contact.region}</div>
               <div className="v">
                 {resume.location}
                 <small
@@ -185,19 +195,19 @@ export default function App({ theme, setTheme }) {
 
         <div className="end-block">
           <div className="cell">
-            <div className="label">Drawn By</div>
+            <div className="label">{ui.endBlock.drawnBy}</div>
             <div className="value">{doc.drawnBy}</div>
           </div>
           <div className="cell">
-            <div className="label">Revision</div>
+            <div className="label">{ui.endBlock.revision}</div>
             <div className="value">{doc.revisionDate}</div>
           </div>
           <div className="cell">
-            <div className="label">Document ID</div>
+            <div className="label">{ui.endBlock.documentId}</div>
             <div className="value">{doc.id}</div>
           </div>
           <div className="cell" style={{ textAlign: "right" }}>
-            <div className="label">Status</div>
+            <div className="label">{ui.endBlock.status}</div>
             <span className="stamp">{resume.availability}</span>
           </div>
         </div>
@@ -206,23 +216,23 @@ export default function App({ theme, setTheme }) {
   );
 }
 
-function TitleBlock() {
+function TitleBlock({ resume, ui }) {
   return (
     <div className="title-block">
       <div className="cell">
-        <div className="label">Subject</div>
+        <div className="label">{ui.titleBlock.subject}</div>
         <div className="value big">{resume.name}</div>
       </div>
       <div className="cell">
-        <div className="label">Discipline</div>
+        <div className="label">{ui.titleBlock.discipline}</div>
         <div className="value">{resume.role}</div>
       </div>
       <div className="cell">
-        <div className="label">Years Active</div>
+        <div className="label">{ui.titleBlock.yearsActive}</div>
         <div className="value">{resume.yearsActive}</div>
       </div>
       <div className="cell">
-        <div className="label">Domain</div>
+        <div className="label">{ui.titleBlock.domain}</div>
         <div className="value">{resume.domain}</div>
       </div>
     </div>
